@@ -98,16 +98,35 @@ export default function ProductGrid() {
 
   return (
     <section style={{ borderBottom: `1px solid ${T.line}` }}>
+      <style>{`
+        .pg-cat-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid ${T.line}; }
+        .pg-drop-header { display: flex; justify-content: space-between; align-items: baseline; padding: 24px 24px 16px; border-bottom: 1px solid ${T.line}; }
+        .pg-product-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid ${T.line}; }
+        .pg-product-grid > div { border-right: 1px solid ${T.line}; border-bottom: 1px solid ${T.line}; }
+        .pg-product-grid > div:nth-child(4n) { border-right: none; }
+        .pg-span-all { grid-column: span 4; }
+        @media (max-width: 640px) {
+          .pg-cat-strip { grid-template-columns: repeat(2, 1fr) !important; }
+          .pg-cat-strip a:nth-child(odd) { border-right: 1px solid ${T.line}; }
+          .pg-cat-strip a:nth-child(1), .pg-cat-strip a:nth-child(2) { border-bottom: 1px solid ${T.line}; }
+          .pg-drop-header { flex-direction: column; gap: 14px; align-items: flex-start; padding: 20px 16px 14px !important; }
+          .pg-product-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .pg-product-grid > div:nth-child(4n) { border-right: 1px solid ${T.line}; }
+          .pg-product-grid > div:nth-child(2n) { border-right: none; }
+          .pg-span-all { grid-column: span 2 !important; }
+        }
+      `}</style>
+
       {/* Category strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', borderBottom: `1px solid ${T.line}` }}>
+      <div className="pg-cat-strip">
         {categories.map((cat, i) => (
           <a key={cat.n} href={cat.href} style={{
             display: 'block', textDecoration: 'none',
-            padding: '28px 24px', color: T.paper,
-            borderRight: i < 3 ? `1px solid ${T.line}` : 'none',
+            padding: '20px 16px', color: T.paper,
+            borderRight: i === 1 || i === 3 ? 'none' : `1px solid ${T.line}`,
           }}>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em' }}>{cat.n}</div>
-            <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 32, fontWeight: 800, margin: '6px 0 4px', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+            <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 'clamp(20px, 4vw, 32px)', fontWeight: 800, margin: '6px 0 4px', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
               {cat.label}
             </div>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted }}>{cat.meta}</div>
@@ -116,14 +135,11 @@ export default function ProductGrid() {
       </div>
 
       {/* Drop section header */}
-      <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-        padding: '24px 24px 16px', borderBottom: `1px solid ${T.line}`,
-      }}>
+      <div className="pg-drop-header">
         <div>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em' }}>[ 002 / LE DROP ]</div>
           <h2 style={{
-            fontFamily: "'Archivo Narrow', sans-serif", fontSize: 48, fontWeight: 800, margin: '6px 0 0',
+            fontFamily: "'Archivo Narrow', sans-serif", fontSize: 'clamp(32px, 6vw, 48px)', fontWeight: 800, margin: '6px 0 0',
             letterSpacing: '-0.02em', textTransform: 'uppercase', color: T.paper,
           }}>Pièces du moment</h2>
         </div>
@@ -131,33 +147,31 @@ export default function ProductGrid() {
           background: 'none', border: `1px solid ${T.paper}`, color: T.paper,
           padding: '10px 16px', fontFamily: "'Archivo', sans-serif", fontWeight: 700,
           fontSize: 12, letterSpacing: '0.12em', textDecoration: 'none', textTransform: 'uppercase',
+          flexShrink: 0,
         }}>
           Tout voir →
         </a>
       </div>
 
       {/* Product grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', borderTop: `1px solid ${T.line}` }}>
+      <div className="pg-product-grid">
         {loading && (
-          <div style={{ gridColumn: 'span 4', display: 'flex', alignItems: 'center', justifyContent: 'center', aspectRatio: '4/1' }}>
+          <div className="pg-span-all" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', aspectRatio: '4/1' }}>
             <p style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 24, fontWeight: 800, letterSpacing: '0.04em', opacity: 0.3 }}>CHARGEMENT...</p>
           </div>
         )}
         {error && (
-          <div style={{ gridColumn: 'span 4', display: 'flex', alignItems: 'center', justifyContent: 'center', aspectRatio: '4/1' }}>
+          <div className="pg-span-all" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', aspectRatio: '4/1' }}>
             <p style={{ fontSize: 14, color: '#ff6b6b' }}>Erreur : {error}</p>
           </div>
         )}
         {!loading && !error && products.length === 0 && (
-          <div style={{ gridColumn: 'span 4', display: 'flex', alignItems: 'center', justifyContent: 'center', aspectRatio: '4/1' }}>
+          <div className="pg-span-all" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', aspectRatio: '4/1' }}>
             <p style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 24, fontWeight: 800, opacity: 0.3, textTransform: 'uppercase' }}>Aucun article disponible</p>
           </div>
         )}
-        {!loading && !error && products.map((p, i) => (
-          <div key={p.id} style={{
-            borderRight: (i % 4 < 3) ? `1px solid ${T.line}` : 'none',
-            borderBottom: i < 4 ? `1px solid ${T.line}` : 'none',
-          }}>
+        {!loading && !error && products.map((p) => (
+          <div key={p.id}>
             <ProductCard product={p} />
           </div>
         ))}

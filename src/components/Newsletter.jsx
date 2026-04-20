@@ -19,12 +19,19 @@ export default function Newsletter() {
   }
 
   return (
-    <section style={{
-      background: T.bg, color: T.paper,
-      display: 'grid', gridTemplateColumns: '1.2fr 1fr',
-      borderBottom: `1px solid ${T.line}`,
-    }}>
-      <div style={{ padding: '48px 36px', borderRight: `1px solid ${T.line}` }}>
+    <section style={{ background: T.bg, color: T.paper, borderBottom: `1px solid ${T.line}` }}>
+      <style>{`
+        .nl-grid { display: grid; grid-template-columns: 1.2fr 1fr; }
+        .nl-left { padding: 48px 36px; border-right: 1px solid ${T.line}; }
+        .nl-right { padding: 48px 36px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+        @media (max-width: 640px) {
+          .nl-grid { grid-template-columns: 1fr !important; }
+          .nl-left { padding: 36px 20px !important; border-right: none !important; border-bottom: 1px solid ${T.line}; }
+          .nl-right { padding: 28px 20px !important; }
+        }
+      `}</style>
+      <div className="nl-grid">
+      <div className="nl-left">
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em', marginBottom: 16 }}>
           [ 004 / RESTE DANS LA BOUCLE ]
         </div>
@@ -40,7 +47,7 @@ export default function Newsletter() {
         </p>
       </div>
 
-      <div style={{ padding: '48px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
+      <div className="nl-right">
         {submitted ? (
           <div>
             <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 36, fontWeight: 800, textTransform: 'uppercase', marginBottom: 8 }}>
@@ -82,6 +89,7 @@ export default function Newsletter() {
           <a href="#" style={{ color: T.muted, textDecoration: 'none' }}>SUIVRE SUR SUBSTACK ↗</a>
           <a href="#" style={{ color: T.muted, textDecoration: 'none' }}>VOIR L'INSTAGRAM ↗</a>
         </div>
+      </div>
       </div>
     </section>
   )

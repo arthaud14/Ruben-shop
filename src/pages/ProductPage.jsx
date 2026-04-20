@@ -113,10 +113,20 @@ export default function ProductPage() {
           <div style={{ width: 80 }} />
         </nav>
 
-        <div className="grid grid-cols-2">
+        <style>{`
+          .pp-layout { display: grid; grid-template-columns: 1fr 1fr; }
+          .pp-image { display: flex; align-items: center; justify-content: center; max-height: 70vh; }
+          .pp-info { padding: 3.5rem; display: flex; flex-direction: column; }
+          @media (max-width: 640px) {
+            .pp-layout { grid-template-columns: 1fr !important; }
+            .pp-image { max-height: 60vw; }
+            .pp-info { padding: 24px 16px !important; }
+          }
+        `}</style>
+        <div className="pp-layout">
           {/* Image */}
           <div
-            className="flex items-center justify-center max-h-[70vh]"
+            className="pp-image"
             style={{ background: product.couleur_fond ?? "#E8E5D8", borderRight: `1px solid ${T.line}` }}
           >
             {product.image_url ? (
@@ -134,8 +144,8 @@ export default function ProductPage() {
 
           {/* Infos */}
           <div
-            className="flex flex-col"
-            style={{ background: T.bg, color: T.paper, paddingTop: "3.5rem", paddingBottom: "3rem", paddingLeft: "3.5rem", paddingRight: "3.5rem" }}
+            className="pp-info"
+            style={{ background: T.bg, color: T.paper }}
           >
             {/* Catégorie + nom */}
             <div style={{ marginBottom: "1.5rem" }}>

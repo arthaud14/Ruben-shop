@@ -17,8 +17,18 @@ const points = [
 export default function Manifesto() {
   return (
     <section style={{ background: T.paper, color: T.ink, borderBottom: `1px solid ${T.line}` }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: `1px solid ${T.paperLine}` }}>
-        <div style={{ padding: '56px 36px', borderRight: `1px solid ${T.paperLine}` }}>
+      <style>{`
+        .manifesto-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid ${T.paperLine}; }
+        .manifesto-left { padding: 56px 36px; border-right: 1px solid ${T.paperLine}; }
+        .manifesto-right { padding: 56px 36px; display: grid; grid-template-rows: repeat(4, 1fr); gap: 0; }
+        @media (max-width: 640px) {
+          .manifesto-grid { grid-template-columns: 1fr !important; }
+          .manifesto-left { padding: 36px 20px !important; border-right: none !important; border-bottom: 1px solid ${T.paperLine}; }
+          .manifesto-right { padding: 28px 20px !important; grid-template-rows: auto !important; }
+        }
+      `}</style>
+      <div className="manifesto-grid">
+        <div className="manifesto-left">
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em', marginBottom: 20 }}>
             [ 003 / MANIFESTE ]
           </div>
@@ -33,7 +43,7 @@ export default function Manifesto() {
           </div>
         </div>
 
-        <div style={{ padding: '56px 36px', display: 'grid', gridTemplateRows: 'repeat(4, 1fr)', gap: 0 }}>
+        <div className="manifesto-right">
           {points.map(([title, desc], i) => (
             <div key={i} style={{
               padding: '18px 0', borderBottom: i < 3 ? `1px solid ${T.paperLine}` : 'none',

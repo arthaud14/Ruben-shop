@@ -16,18 +16,26 @@ const cols = [
 export default function Footer() {
   return (
     <footer style={{ background: T.ink, color: T.paper, borderTop: `1px solid ${T.line}` }}>
-      <div style={{
-        padding: '16px 24px', borderBottom: `1px solid ${T.line}`,
-        display: 'flex', justifyContent: 'space-between',
-        fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: '0.14em', color: T.muted,
-      }}>
+      <style>{`
+        .footer-top { padding: 16px 24px; border-bottom: 1px solid ${T.line}; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: ${T.muted}; }
+        .footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid ${T.line}; }
+        .footer-col { padding: 28px 20px; border-right: 1px solid ${T.line}; }
+        .footer-col:last-child { border-right: none; }
+        @media (max-width: 640px) {
+          .footer-top { flex-direction: column; gap: 4px; }
+          .footer-cols { grid-template-columns: repeat(2, 1fr) !important; }
+          .footer-col:nth-child(2n) { border-right: none !important; }
+          .footer-col:nth-child(1), .footer-col:nth-child(2) { border-bottom: 1px solid ${T.line}; }
+        }
+      `}</style>
+      <div className="footer-top">
         <span>RUBEN<span style={{ color: T.accent }}>/</span>SHOP — UNE MARQUE INDÉPENDANTE</span>
         <span>@RUBENSHOP · LYON — FR</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', borderBottom: `1px solid ${T.line}` }}>
-        {cols.map((col, i) => (
-          <div key={col.title} style={{ padding: '28px 24px', borderRight: i < 3 ? `1px solid ${T.line}` : 'none' }}>
+      <div className="footer-cols">
+        {cols.map((col) => (
+          <div key={col.title} className="footer-col">
             <div style={{ fontFamily: "'Archivo', sans-serif", fontWeight: 800, fontSize: 13, letterSpacing: '0.14em', color: T.accent, marginBottom: 14 }}>
               {col.title}
             </div>

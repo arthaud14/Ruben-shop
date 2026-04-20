@@ -37,7 +37,19 @@ export default function CartPage() {
           <div style={{ width: 80 }} />
         </nav>
 
-        <div style={{ padding: '32px 36px', borderBottom: `1px solid ${T.line}` }}>
+        <style>{`
+          .cart-item { display: flex; align-items: center; gap: 24px; padding: 24px 36px; border-bottom: 1px solid ${T.line}; }
+          .cart-footer { padding: 32px 36px; display: flex; align-items: center; justify-content: space-between; }
+          .cart-header { padding: 32px 36px; border-bottom: 1px solid ${T.line}; }
+          @media (max-width: 640px) {
+            .cart-item { gap: 14px; padding: 16px !important; }
+            .cart-footer { flex-direction: column; gap: 16px; align-items: flex-start; padding: 24px 16px !important; }
+            .cart-header { padding: 24px 16px !important; }
+            .cart-header h1 { font-size: 40px !important; }
+          }
+        `}</style>
+
+        <div className="cart-header">
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em', marginBottom: 8 }}>[ PANIER ]</div>
           <h1 style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 56, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', color: T.paper }}>
             Mon Panier
@@ -52,10 +64,7 @@ export default function CartPage() {
           <>
             <div style={{ borderBottom: `1px solid ${T.line}` }}>
               {items.map((item) => (
-                <div key={`${item.id}-${item.size}`} style={{
-                  display: 'flex', alignItems: 'center', gap: 24, padding: '24px 36px',
-                  borderBottom: `1px solid ${T.line}`,
-                }}>
+                <div key={`${item.id}-${item.size}`} className="cart-item">
                   <div style={{ width: 96, height: 96, flexShrink: 0, background: item.couleur_fond ?? '#E8E5D8', border: `1px solid ${T.line}` }}>
                     {item.image_url && (
                       <img src={item.image_url} alt={item.nom} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -94,7 +103,7 @@ export default function CartPage() {
               ))}
             </div>
 
-            <div style={{ padding: '32px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="cart-footer">
               <div>
                 <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em', marginBottom: 4 }}>TOTAL</div>
                 <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 40, fontWeight: 800, color: T.paper }}>
