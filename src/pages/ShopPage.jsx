@@ -22,7 +22,7 @@ function ProductCard({ product }) {
     <div
       onClick={() => navigate(`/produit/${product.id}`)}
       style={{
-        display: 'flex', alignItems: 'center', gap: 24, padding: '20px 24px',
+        display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px',
         cursor: 'pointer', borderBottom: `1px solid ${T.line}`,
         transition: 'background 150ms',
       }}
@@ -30,7 +30,7 @@ function ProductCard({ product }) {
       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
     >
       <div style={{
-        width: 80, height: 80, flexShrink: 0, overflow: 'hidden',
+        width: 72, height: 72, flexShrink: 0, overflow: 'hidden',
         background: product.couleur_fond ?? '#E8E5D8',
       }}>
         {product.image_url && (
@@ -39,11 +39,15 @@ function ProductCard({ product }) {
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontWeight: 800, fontSize: 18, textTransform: 'uppercase', letterSpacing: '-0.01em', color: T.paper }}>
+        <div style={{
+          fontFamily: "'Archivo Narrow', sans-serif", fontWeight: 800,
+          fontSize: 16, textTransform: 'uppercase', letterSpacing: '-0.01em',
+          color: T.paper, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+        }}>
           {product.nom}
         </div>
         {product.saison && (
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, marginTop: 2, letterSpacing: '0.08em' }}>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: T.muted, marginTop: 2, letterSpacing: '0.08em' }}>
             {product.saison.toUpperCase()}
           </div>
         )}
@@ -52,13 +56,12 @@ function ProductCard({ product }) {
             ÉPUISÉ
           </div>
         )}
+        <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 18, fontWeight: 700, color: T.paper, marginTop: 4 }}>
+          {Number(product.prix).toFixed(2).replace('.', ',')} €
+        </div>
       </div>
 
-      <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 20, fontWeight: 700, color: T.paper, whiteSpace: 'nowrap' }}>
-        {Number(product.prix).toFixed(2).replace('.', ',')} €
-      </div>
-
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.1em' }}>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.1em', flexShrink: 0 }}>
         VOIR →
       </div>
     </div>
@@ -70,24 +73,33 @@ export default function ShopPage() {
   const navigate = useNavigate()
   const [filter, setFilter] = useState('TOUT')
 
+  const filtered = filter === 'TOUT' ? products : products.filter(p =>
+    p.categorie?.toUpperCase() === filter
+  )
+
   return (
-    <div style={{ minHeight: '100vh', background: T.bg, display: 'flex', justifyContent: 'center' }}>
-      <div style={{ width: '100%', maxWidth: '80rem', borderLeft: `1px solid ${T.line}`, borderRight: `1px solid ${T.line}` }}>
+    <div style={{ minHeight: '100vh', background: T.bg }}>
+      <style>{`
+        .shop-header { padding: 36px 24px 20px; border-bottom: 1px solid ${T.line}; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 16; }
+        .shop-h1 { font-family: 'Archivo Narrow', sans-serif; font-size: clamp(56px, 10vw, 140px); font-weight: 800; margin: 10px 0 0; letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.85; color: ${T.paper}; }
+        .filters-bar { display: flex; border-bottom: 1px solid ${T.line}; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .filters-bar::-webkit-scrollbar { display: none; }
+        .filter-btn { flex-shrink: 0; padding: 14px 16px; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.12em; cursor: pointer; text-transform: uppercase; border: none; transition: background 150ms; }
+        @media (max-width: 640px) {
+          .shop-header { padding: 24px 16px 16px !important; }
+          .shop-h1 { font-size: clamp(48px, 14vw, 80px) !important; }
+        }
+      `}</style>
+
+      <div style={{ width: '100%', maxWidth: '80rem', margin: '0 auto', borderLeft: `1px solid ${T.line}`, borderRight: `1px solid ${T.line}` }}>
         <Navbar />
 
-        {/* Shop header */}
-        <section style={{
-          padding: '48px 36px 24px', borderBottom: `1px solid ${T.line}`,
-          display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'end', gap: 24,
-        }}>
+        <section className="shop-header">
           <div>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em' }}>
               [ BOUTIQUE / {products.length} ARTICLES ]
             </div>
-            <h1 style={{
-              fontFamily: "'Archivo Narrow', sans-serif", fontSize: 'clamp(64px, 10vw, 140px)', fontWeight: 800, margin: '10px 0 0',
-              letterSpacing: '-0.04em', textTransform: 'uppercase', lineHeight: 0.85, color: T.paper,
-            }}>
+            <h1 className="shop-h1">
               BOU<span style={{ color: T.accent }}>·</span>TIQUE
             </h1>
           </div>
@@ -103,22 +115,18 @@ export default function ShopPage() {
           </button>
         </section>
 
-        {/* Filters */}
-        <div style={{ display: 'flex', borderBottom: `1px solid ${T.line}` }}>
+        <div className="filters-bar">
           {cats.map((c, i) => (
-            <button key={c} onClick={() => setFilter(c)} style={{
-              flex: 1, background: filter === c ? T.accent : 'transparent',
+            <button key={c} onClick={() => setFilter(c)} className="filter-btn" style={{
+              background: filter === c ? T.accent : 'transparent',
               color: filter === c ? T.ink : T.paper,
-              border: 'none', borderRight: i < cats.length - 1 ? `1px solid ${T.line}` : 'none',
-              padding: '16px 12px', fontFamily: "'Archivo', sans-serif", fontWeight: 700,
-              fontSize: 12, letterSpacing: '0.12em', cursor: 'pointer', textTransform: 'uppercase',
+              borderRight: i < cats.length - 1 ? `1px solid ${T.line}` : 'none',
             }}>
               {c}
             </button>
           ))}
         </div>
 
-        {/* Product list */}
         <div>
           {loading && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8rem 0' }}>
@@ -126,12 +134,12 @@ export default function ShopPage() {
             </div>
           )}
           {error && <p style={{ padding: '2rem', fontSize: 14, color: '#ff6b6b' }}>{error}</p>}
-          {!loading && !error && products.length === 0 && (
+          {!loading && !error && filtered.length === 0 && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8rem 0' }}>
               <p style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 24, fontWeight: 800, opacity: 0.3, textTransform: 'uppercase', color: T.paper }}>AUCUN ARTICLE</p>
             </div>
           )}
-          {!loading && !error && products.map(p => (
+          {!loading && !error && filtered.map(p => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>

@@ -25,30 +25,37 @@ export default function Hero() {
 
   return (
     <section style={{ background: T.bg, color: T.paper, borderBottom: `1px solid ${T.line}` }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', borderBottom: `1px solid ${T.line}` }}>
+      <style>{`
+        .hero-grid { display: grid; grid-template-columns: 1.4fr 1fr; border-bottom: 1px solid ${T.line}; }
+        .hero-left { padding: 56px 40px 40px; border-right: 1px solid ${T.line}; }
+        .hero-h1 { font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-weight: 800; font-size: clamp(64px, 12vw, 200px); line-height: 0.85; letter-spacing: -0.04em; margin: 0; text-transform: uppercase; }
+        .hero-right { padding: 32px 36px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+        .hero-cta { display: flex; gap: 16px; margin-top: 40px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: ${T.muted}; flex-wrap: wrap; }
+        @media (max-width: 640px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-left { padding: 32px 20px 28px !important; border-right: none !important; border-bottom: 1px solid ${T.line}; }
+          .hero-h1 { font-size: clamp(52px, 15vw, 100px) !important; }
+          .hero-right { padding: 24px 20px !important; }
+          .hero-cta { margin-top: 24px !important; }
+          .hero-cta span { display: none; }
+        }
+      `}</style>
 
-        {/* Big typo */}
-        <div style={{ padding: '56px 40px 40px', borderRight: `1px solid ${T.line}` }}>
+      <div className="hero-grid">
+        <div className="hero-left">
           <div style={{
             fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted,
             letterSpacing: '0.14em', marginBottom: 24,
           }}>
             [ 001 / INDEX ] — MAJ {new Date().toISOString().slice(0, 10)} · {new Date().toLocaleTimeString('fr-FR').slice(0, 5)}
           </div>
-          <h1 style={{
-            fontFamily: "'Archivo Narrow', 'Archivo', sans-serif", fontWeight: 800,
-            fontSize: 'clamp(72px, 12vw, 200px)', lineHeight: 0.85,
-            letterSpacing: '-0.04em', margin: 0, textTransform: 'uppercase',
-          }}>
+          <h1 className="hero-h1">
             DES<br />
             PIÈCES<br />
             <span style={{ color: T.accent }}>QUI FONT</span><br />
             DU BRUIT.
           </h1>
-          <div style={{
-            display: 'flex', gap: 16, marginTop: 40, alignItems: 'center',
-            fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: T.muted,
-          }}>
+          <div className="hero-cta">
             <a href="/boutique" style={{
               background: T.accent, color: '#0A0A0A',
               border: 'none', padding: '14px 26px',
@@ -62,13 +69,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Countdown panel */}
-        <div style={{ padding: '32px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24 }}>
+        <div className="hero-right">
           <div>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.muted, letterSpacing: '0.14em', marginBottom: 12 }}>
               → PROCHAIN DROP
             </div>
-            <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 28, fontWeight: 700, letterSpacing: '-0.01em' }}>
+            <div style={{ fontFamily: "'Archivo Narrow', sans-serif", fontSize: 24, fontWeight: 700, letterSpacing: '-0.01em' }}>
               DROP 04 — PRINTEMPS 26
             </div>
             <div style={{ fontFamily: "'Archivo', sans-serif", fontSize: 14, color: T.muted, marginTop: 8, lineHeight: 1.5 }}>
@@ -84,7 +90,7 @@ export default function Hero() {
             {[['JOURS', d], ['HEURES', h], ['MIN', m], ['SEC', s]].map(([label, val]) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{
-                  fontFamily: "'Archivo Narrow', sans-serif", fontSize: 40, fontWeight: 800,
+                  fontFamily: "'Archivo Narrow', sans-serif", fontSize: 36, fontWeight: 800,
                   letterSpacing: '-0.03em', color: T.paper,
                   fontVariantNumeric: 'tabular-nums',
                 }}>{String(val).padStart(2, '0')}</div>

@@ -9,11 +9,8 @@ const T = {
 }
 
 const tickerItems = [
-  'DROP 04 — PRINTEMPS 26',
-  'LIVRAISON OFFERTE DÈS 80€',
-  'TIRAGES NUMÉROTÉS',
-  'LYON / PARIS / BERLIN',
-  'RESTOCK — JAMAIS',
+  'SS 26', 'TIRAGES NUMÉROTÉS', 'LYON / PARIS / BERLIN',
+  'RESTOCK — JAMAIS', 'LIVRAISON OFFERTE DÈS 80€',
 ]
 
 function Ticker() {
@@ -47,28 +44,35 @@ export default function Navbar() {
       background: T.bg, color: T.paper,
       borderBottom: `1px solid ${T.line}`,
     }}>
-      <div style={{
+      <style>{`
+        @media (max-width: 640px) {
+          .nav-links { display: none !important; }
+          .nav-meta { display: none !important; }
+          .nav-logo { font-size: 15px !important; }
+          .nav-inner { padding: 12px 16px !important; grid-template-columns: 1fr auto !important; }
+          .nav-cart { font-size: 12px !important; }
+        }
+      `}</style>
+      <div className="nav-inner" style={{
         display: 'grid', gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center', padding: '14px 24px',
       }}>
-        <nav style={{ display: 'flex', gap: 22, fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', fontFamily: "'Archivo', sans-serif" }}>
+        <nav className="nav-links" style={{ display: 'flex', gap: 22, fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', fontFamily: "'Archivo', sans-serif" }}>
           <a href="/" style={{ color: T.paper, textDecoration: 'none', textTransform: 'uppercase' }}>Index</a>
           <a href="/boutique" style={{ color: T.paper, textDecoration: 'none', textTransform: 'uppercase' }}>Boutique</a>
           <a href="#" style={{ color: T.paper, textDecoration: 'none', textTransform: 'uppercase' }}>Manifeste</a>
           <a href="#" style={{ color: T.paper, textDecoration: 'none', textTransform: 'uppercase' }}>Archive</a>
         </nav>
-
-        <a href="/" style={{
+        <a href="/" className="nav-logo" style={{
           color: T.paper, textDecoration: 'none',
           fontFamily: "'Archivo Narrow', sans-serif",
           fontSize: 18, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase',
         }}>
           RUBEN<span style={{ color: T.accent }}>/</span>SHOP
         </a>
-
         <div style={{ display: 'flex', gap: 16, justifyContent: 'flex-end', fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', fontFamily: "'Archivo', sans-serif" }}>
-          <span style={{ color: T.muted }}>LYON · FR</span>
-          <a href="/panier" style={{ color: T.paper, textDecoration: 'none', textTransform: 'uppercase' }}>
+          <span className="nav-meta" style={{ color: T.muted }}>LYON · FR</span>
+          <a className="nav-cart" href="/panier" style={{ color: T.paper, textDecoration: 'none', textTransform: 'uppercase' }}>
             PANIER
             <span style={{
               display: 'inline-block', marginLeft: 6, background: T.accent,
